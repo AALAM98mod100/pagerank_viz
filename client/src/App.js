@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { useState } from 'react';
+import GraphContainer from './components/GraphContainer';
+import GraphIndex from './components/GraphIndex';
+import { ThemeProvider } from '@mui/material';
+import theme from './assets/theme';
+
+const App = () => {
+    const [graphArray, setGraphArray] = useState([]);
+    const [graphData, setGraphData] = useState({});
+    return (
+        <ThemeProvider theme={theme}>
+        <div className="App">
+            <h1>Graph Visualization and PageRank</h1>
+            <div style={
+            {
+                display: 'flex',
+                flexDirection: 'row',
+            }
+        }>
+        <GraphIndex graphArray={graphArray} setGraphArray={setGraphArray} setGraphData={setGraphData}/>
+        <GraphContainer graphData={graphData} setGraphData={setGraphData}/> 
+        </div>
+        </div>
+        </ThemeProvider>
+    );
+};
 
 export default App;
