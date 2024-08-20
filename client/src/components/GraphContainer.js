@@ -10,13 +10,16 @@ import Button from '@mui/material/Button';
 const GraphContainer = ({graphData, setGraphData}) => {
     const [showAddNodeModal, setShowAddNodeModal] = useState(false);
     const [showAddEdgeModal, setShowAddEdgeModal] = useState(false);
+    const [error, setError] = useState(null);
     
     const calculatePageRank = () => {
         axios.get(`/api/calculate_pagerank/${graphData.id}`)
             .then(response => {
-                setGraphData(response.data)
+                setGraphData(response.data);
+                setError(null); // Reset error state
             })
             .catch(error => console.error('Error fetching graph data:', error));
+            setError('Failed to fetch graph data. Please try again.');
     };
 
     return (
@@ -29,6 +32,7 @@ const GraphContainer = ({graphData, setGraphData}) => {
             padding: '2px',
             border: '1px solid black',
         }}>
+            {error && <div style={{ color: 'red', position: 'relative' }}>{error}</div>}
         <div style={{
             position: 'absolute',
             top: '1px',

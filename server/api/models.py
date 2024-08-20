@@ -72,10 +72,10 @@ class Graph(models.Model):
             "name": self.name,
         }
 
-    def get_neighbors(self, node):
-        return Node.objects.filter(
-            Q(from_node__in=node.edges) | Q(to_node__in=node.edges)
-        ).exclude(id=node.id)
+    # def get_neighbors(self, node):
+    #     return Node.objects.filter(
+    #         Q(from_node__in=node.edges) | Q(to_node__in=node.edges)
+    #     ).exclude(id=node.id)
 
     def calculate_pagerank(self) -> None:
         """Calculates the pagerank values for the graph
@@ -148,6 +148,12 @@ class Node(models.Model):
     def edges(self):
         return Edge.objects.filter(from_node=self) | Edge.objects.filter(to_node=self)
 
+    @property
+    def neighbors(self):
+        return Node.objects.filter(
+            Q(from_node__in=self.edges) | Q(to_node__in=self.edges)
+        ).exclude(id=self.id)
+
     def serialize(self):
         """Serialize the node getting all the edges and returning a dictionary with the node and its edges.
 
@@ -164,6 +170,12 @@ class Node(models.Model):
                 {"from": edge.from_node.id, "to": edge.to_node.id}
                 for edge in self.edges
             ],
+        }
+
+    def serialize_short(self):
+        return {
+            "id": self.id,
+            "label": self.name,
         }
 
 

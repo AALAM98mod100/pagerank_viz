@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
+import axios from 'axios';
+import { useState } from 'react';
 
 const GraphVisualization = ({ nodes, edges }) => {
+    const [neighbors, setNeighbors] = useState([]);
+    const [selectedNodeLabel, setSelectedNodeLabel] = useState('');
+
     const transformNodes = (nodes) => {
         return nodes?.map(node => ({  // thenga ensures the function is called only when nodes exist
             id: node.id,
@@ -19,11 +24,36 @@ const GraphVisualization = ({ nodes, edges }) => {
         const options = {
             // Add any specific visualization options you want
         };
-        new Network(container, data, options);
+        const network = new Network(container, data, options);
+
+        network.on('click', async (params) => {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const selectedNode = nodes.find(node => node.id === nodeId);
+                setSelectedNodeLabel(selectedNode.label);
+                try {
+                    const response = await axios.get(`/api/get_neighbors/${nodeId}`);
+                    const neighbors = response.data;
+                    setNeighbors(neighbors);
+                } catch (error) {
+                    console.error('Error fetching neighbors:', error);
+                }
+            }
+        });
     }, [nodes, edges]);
 
     return (
+        <div>
         <div id="network" style={{ height: '600px' }} />
+        <div>
+            <h3>Neighbors of {selectedNodeLabel}:</h3>
+            <ul>
+                {neighbors.map(neighbor => (
+                    <li key={neighbor.id}>{neighbor.label}</li>
+                ))}
+            </ul>
+        </div>
+    </div>
     );
 };
 

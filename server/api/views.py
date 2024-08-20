@@ -14,7 +14,6 @@ def home(request):
         return JsonResponse(list_of_graphs, safe=False)
     except Exception as e:
         raise e
-        return JsonResponse([], safe=False)
 
 
 @api_view(["GET"])
@@ -66,6 +65,19 @@ def create_graph(request):
         "graphs": [g.serialize_short() for g in Graph.objects.all()],
     }
     return JsonResponse(response, safe=False)
+
+
+@api_view(["GET"])
+def get_neighbors(request, node_id):
+    from api.models import Node
+
+    try:
+        node = Node.objects.get(id=node_id)
+        neighbors = node.neighbors
+        neighbors = [n.serialize() for n in neighbors]
+    except Node.DoesNotExist:
+        neighbors = ["Something went wrong"]
+    return JsonResponse(neighbors, safe=False)
 
 
 @api_view(["GET"])
