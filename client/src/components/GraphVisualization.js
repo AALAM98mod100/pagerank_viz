@@ -40,26 +40,32 @@ const GraphVisualization = ({ nodes, edges }) => {
                 }
             }
         });
+        network.on('deselectNode', () => {
+            setSelectedNodeLabel('');
+            setNeighbors([]);
+        });
     }, [nodes, edges]);
 
     return (
         <div>
         <div id="network" style={{ height: '600px' }} />
-            <div style={{ 
-                position: 'absolute', 
-                top: 0, 
-                left: 0, 
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
-                padding: '10px', 
-                borderRadius: '5px' 
-            }}>
-                <h3>Neighbors of {selectedNodeLabel}:</h3>
-            <ul>
-                {neighbors.map(neighbor => (
-                    <li key={neighbor.id}>{`${neighbor.label} - ${neighbor.value.toFixed(2)}`}</li>
-                ))}
-            </ul>
-        </div>
+        {selectedNodeLabel && (
+                <div style={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                    padding: '10px', 
+                    borderRadius: '5px' 
+                }}>
+                    <h3>Neighbors of {selectedNodeLabel}:</h3>
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                        {neighbors.map(neighbor => (
+                            <li key={neighbor.id}>{`${neighbor.label}: ${neighbor.value.toFixed(2)}`}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
     </div>
     );
 };
