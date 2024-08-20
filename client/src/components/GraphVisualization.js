@@ -45,8 +45,15 @@ const GraphVisualization = ({ nodes, edges }) => {
     return (
         <div>
         <div id="network" style={{ height: '600px' }} />
-        <div>
-            <h3>Neighbors of {selectedNodeLabel}:</h3>
+            <div style={{ 
+                position: 'absolute', 
+                top: 0, 
+                left: 0, 
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                padding: '10px', 
+                borderRadius: '5px' 
+            }}>
+                <h3>Neighbors of {selectedNodeLabel}:</h3>
             <ul>
                 {neighbors.map(neighbor => (
                     <li key={neighbor.id}>{neighbor.label}</li>
