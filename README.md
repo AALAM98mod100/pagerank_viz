@@ -6,10 +6,13 @@ To run the application, you need to have Docker installed on your machine. If yo
 
 Once you have Docker installed, you can run the following command to start the application:
 ```bash
-docker-compose build
+make build  # this runs docker-compose build
 ```
 ```bash
-docker-compose up
+make run  # this runs docker-compose up
+```
+```bash
+make migrate  # this runs docker-compose exec server python ./manage.py migrate
 ```
 
 After running the above commands, you can access the application by visiting [http://localhost:3000](http://localhost:3000) in your browser.
@@ -25,5 +28,5 @@ After running the above commands, you can access the application by visiting [ht
 #### Tests
 To run the tests, you can run the following command:
 ```bash
-docker-compose exec server python manage.py test
+make test  # this runs docker-compose exec server ./manage.py test
 ```
