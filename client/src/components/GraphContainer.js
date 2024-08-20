@@ -42,13 +42,22 @@ const GraphContainer = ({graphData, setGraphData}) => {
             gap: '1rem',
             zIndex: 1
         }}>
-        <Button disabled={!graphData?.id} variant="contained" onClick={calculatePageRank}> 
+        <Button disabled={!graphData?.id} variant="contained" onClick={calculatePageRank} style={{
+            backgroundColor: "#fa6900",
+            color: "white", 
+        }}> 
             Calculate PageRank 
         </Button>
-        <Button disabled={!graphData?.id} variant="contained" onClick={() => setShowAddNodeModal(true)}> 
+        <Button disabled={!graphData?.id} variant="contained" onClick={() => setShowAddNodeModal(true)}style={{
+            backgroundColor: "#fa6900",
+            color: "white",        
+        }}> 
             Add Node 
         </Button>
-        <Button disabled={!graphData?.id} variant="contained" onClick={() => setShowAddEdgeModal(true)}> 
+        <Button disabled={!graphData?.id} variant="contained" onClick={() => setShowAddEdgeModal(true)} style={{
+            backgroundColor: "#fa6900",
+            color: "white", 
+        }}> 
             Add Edge
         </Button>
         </div>

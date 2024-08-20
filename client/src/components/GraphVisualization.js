@@ -56,7 +56,7 @@ const GraphVisualization = ({ nodes, edges }) => {
                 <h3>Neighbors of {selectedNodeLabel}:</h3>
             <ul>
                 {neighbors.map(neighbor => (
-                    <li key={neighbor.id}>{neighbor.label}</li>
+                    <li key={neighbor.id}>{`${neighbor.label} - ${neighbor.value.toFixed(2)}`}</li>
                 ))}
             </ul>
         </div>
