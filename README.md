@@ -57,6 +57,11 @@ make migrate  # this runs docker-compose exec server python ./manage.py migrate
 
 After running the above commands, you can access the application by visiting [http://localhost:3000](http://localhost:3000) in your browser.
 
+#### Tests
+To run the tests, you can run the following command:
+```bash
+make test  # this runs docker-compose exec server ./manage.py test
+```
 #### Technologies used
 - React
  - Material-UI
@@ -65,8 +70,3 @@ After running the above commands, you can access the application by visiting [ht
  - Django REST framework
 - Docker
 
-#### Tests
-To run the tests, you can run the following command:
-```bash
-make test  # this runs docker-compose exec server ./manage.py test
-```
