@@ -64,9 +64,9 @@ make test  # this runs docker-compose exec server ./manage.py test
 ```
 #### Technologies used
 - React
- - Material-UI
- - vis-network
+    - Material-UI
+    - vis-network
 - Django
- - Django REST framework
+    - Django REST framework
 - Docker
 
