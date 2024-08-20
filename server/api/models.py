@@ -77,30 +77,63 @@ class Graph(models.Model):
             Q(from_node__in=node.edges) | Q(to_node__in=node.edges)
         ).exclude(id=node.id)
 
-    def calculate_pagerank(self, d=0.85, iterations=100):
-        nodes = self.nodes
-        n_nodes = len(nodes)
-        page_rank = {node: 1 / n_nodes for node in nodes}
-        for _ in range(iterations):
-            new_page_rank = {}
-            for node in nodes:
-                new_page_rank[node] = (1 - d) + d * sum(
-                    page_rank[neighbor] / len(self.get_neighbors(neighbor))
-                    for neighbor in self.get_neighbors(node)
-                )
+    def calculate_pagerank(self) -> None:
+        """Calculates the pagerank values for the graph
+        and updates in the database
+        """
+        from .pagerank import PageRank
 
-            # Normalize the new PageRank values
-            total_rank = sum(new_page_rank.values())
-            for node in new_page_rank:
-                new_page_rank[node] /= total_rank
+        graph = self.to_graph()
+        pagerank = PageRank(graph)
+        new_values = pagerank.run()
+        self.update_pagerank_values(new_values)
 
-            page_rank = new_page_rank
+    def to_graph(self) -> dict:
+        """Converts a graph from model to a Python object
+        Used to speed up computations performed
+        """
+        graph = {}
+        for node in self.nodes:
+            graph[node] = []
+            for edge in node.edges:
+                if edge.from_node == node:
+                    graph[node].append(edge.to_node)
+                else:
+                    graph[node].append(edge.from_node)
 
+        return graph
+
+    def update_pagerank_values(self, new_values: dict) -> None:
         nodes_to_update = []
-        for node in nodes:
-            node.pagerank_value = page_rank[node]
+        for node in self.nodes:
+            node.pagerank_value = new_values[node]
             nodes_to_update.append(node)
         Node.objects.bulk_update(nodes_to_update, fields=["pagerank_value"])
+
+    # def calculate_pagerank(self, d=0.85, iterations=100):
+    #     nodes = self.nodes
+    #     n_nodes = len(nodes)
+    #     page_rank = {node: 1 / n_nodes for node in nodes}
+    #     for _ in range(iterations):
+    #         new_page_rank = {}
+    #         for node in nodes:
+    #             new_page_rank[node] = (1 - d) + d * sum(
+    #                 page_rank[neighbor] / len(self.get_neighbors(neighbor))
+    #                 for neighbor in self.get_neighbors(node)
+    #             )
+
+    #         # Normalize the new PageRank values
+    #         total_rank = sum(new_page_rank.values())
+    #         for node in new_page_rank:
+    #             new_page_rank[node] /= total_rank
+
+    #         page_rank = new_page_rank
+
+    #     nodes_to_update = []
+    #     for node in nodes:
+    #         node.pagerank_value = page_rank[node]
+    #         nodes_to_update.append(node)
+    #     Node.objects.bulk_update(nodes_to_update, fields=["pagerank_value"])
 
 
 class Node(models.Model):

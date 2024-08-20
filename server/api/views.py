@@ -1,3 +1,4 @@
+import time
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -43,9 +44,13 @@ def get_graph(request, graph_id):
 def calculate_pagerank(request, graph_id):
     graph: Graph = Graph.objects.get_by_id(graph_id)
     try:
+        now = time.time()
         graph.calculate_pagerank()
+        t = time.time() - now
         graph.refresh_from_db()
-        return JsonResponse(graph.serialize())
+        response = graph.serialize()
+        response.update({"time": t})
+        return JsonResponse(response)
     except Exception as e:
         print(e)
 
