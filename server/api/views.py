@@ -80,11 +80,6 @@ def get_neighbors(request, node_id):
     return JsonResponse(neighbors, safe=False)
 
 
-@api_view(["GET"])
-def get_edges(request):
-    return JsonResponse(graph.graph)
-
-
 @api_view(["POST"])
 def add_node(request, graph_id):
     graph: Graph = Graph.objects.get_by_id(graph_id)
@@ -104,16 +99,16 @@ def add_edge(request, graph_id):
     return JsonResponse(graph.serialize())
 
 
-@api_view(["POST"])
-def remove_node(request):
-    node_name = request.data["node"]
-    graph.remove_node(node_name)
-    return JsonResponse({"status": "Node removed"})
+# @api_view(["POST"])
+# def remove_node(request):
+#     node_name = request.data["node"]
+#     graph.remove_node(node_name)
+#     return JsonResponse({"status": "Node removed"})
 
 
-@api_view(["POST"])
-def remove_edge(request):
-    from_node = request.data["from"]
-    to_node = request.data["to"]
-    graph.remove_edge(from_node, to_node)
-    return JsonResponse({"status": "Edge removed"})
+# @api_view(["POST"])
+# def remove_edge(request):
+#     from_node = request.data["from"]
+#     to_node = request.data["to"]
+#     graph.remove_edge(from_node, to_node)
+#     return JsonResponse({"status": "Edge removed"})

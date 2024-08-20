@@ -9,7 +9,4 @@ urlpatterns = [
     path("add_edge/<int:graph_id>", views.add_edge),
     path("get_neighbors/<int:node_id>", views.get_neighbors),
     path("calculate_pagerank/<int:graph_id>", views.calculate_pagerank),
-    path("remove_node/", views.remove_node),
-    path("remove_edge/", views.remove_edge),
-    path("get_edges/", views.get_edges),
 ]
