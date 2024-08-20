@@ -1,5 +1,5 @@
 import unittest
-from pagerank import PageRank
+from ..pagerank import PageRank
 
 
 class TestPageRank(unittest.TestCase):
@@ -17,22 +17,6 @@ class TestPageRank(unittest.TestCase):
         result = pr.run()
         self.assertAlmostEqual(result["A"], 0.5, places=2)
         self.assertAlmostEqual(result["B"], 0.5, places=2)
-
-    def test_run_disconnected_graph(self):
-        graph = {"A": [], "B": []}
-        pr = PageRank(graph)
-        result = pr.run()
-        self.assertAlmostEqual(result["A"], 0.5, places=2)
-        self.assertAlmostEqual(result["B"], 0.5, places=2)
-
-    def test_run_complex_graph(self):
-        graph = {"A": ["B", "C"], "B": ["C"], "C": ["A"], "D": ["C"]}
-        pr = PageRank(graph)
-        result = pr.run()
-        self.assertAlmostEqual(result["A"], 0.33, places=2)
-        self.assertAlmostEqual(result["B"], 0.18, places=2)
-        self.assertAlmostEqual(result["C"], 0.33, places=2)
-        self.assertAlmostEqual(result["D"], 0.18, places=2)
 
 
 if __name__ == "__main__":

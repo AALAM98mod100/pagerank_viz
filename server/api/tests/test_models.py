@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Graph, Node, Edge
+from ..models import Graph, Node, Edge
 
 
 class GraphModelTest(TestCase):
