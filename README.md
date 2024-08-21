@@ -55,6 +55,11 @@ make run  # this runs docker-compose up
 make migrate  # this runs docker-compose exec server python ./manage.py migrate
 ```
 
+> :warning: **Note**: Sometimes the backend fails to start due to the database not being ready. If this happens, you can run the following command to restart the backend:
+    `
+    docker-compose restart server
+    `
+
 After running the above commands, you can access the application by visiting [http://localhost:3000](http://localhost:3000) in your browser.
 
 #### Tests
